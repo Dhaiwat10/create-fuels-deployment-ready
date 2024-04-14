@@ -6,7 +6,7 @@
     "prebuild": "fuels build",
     "fuels:dev": "fuels dev",
     "dev": "next dev",
-    "build": "next build",
+    "build": "fuels build &&next build",
     "start": "next start",
     "lint": "next lint"
   },
