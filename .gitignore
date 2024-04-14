@@ -39,6 +39,7 @@ src/sway-api/contracts
 src/sway-api/predicates
 src/sway-api/scripts
 src/sway-api/index.ts
+src/sway-api/contract-ids.json
 
 sway-programs/**/out
 .turbo
