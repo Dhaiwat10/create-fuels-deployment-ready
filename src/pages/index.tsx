@@ -1,6 +1,5 @@
 import type { TestContractAbi } from '@/sway-api';
 import { TestContractAbi__factory } from '@/sway-api';
-import contractIds from '@/sway-api/contract-ids.json';
 import { FuelLogo } from '@/components/FuelLogo';
 import { bn } from 'fuels';
 import { useState } from 'react';
@@ -9,12 +8,7 @@ import { Button } from '@/components/Button';
 import toast from 'react-hot-toast';
 import { useActiveWallet } from '@/hooks/useActiveWallet';
 import useAsync from 'react-use/lib/useAsync';
-import { CURRENT_ENVIRONMENT } from '@/lib';
-
-const contractId =
-  CURRENT_ENVIRONMENT === 'local'
-    ? contractIds.testContract
-    : '0x7d0e267018076a977b47327286b8a3d98b18950354606bb74492b40a2fd897f3';
+import { useContractId } from '@/hooks/useContractId'
 
 const hasContract = process.env.NEXT_PUBLIC_HAS_CONTRACT === 'true';
 const hasPredicate = process.env.NEXT_PUBLIC_HAS_PREDICATE === 'true';
@@ -24,13 +18,14 @@ export default function Home() {
   const { wallet, walletBalance, refreshWalletBalance } = useActiveWallet();
   const [contract, setContract] = useState<TestContractAbi>();
   const [counter, setCounter] = useState<number>();
+  const contractId = useContractId();
 
   /**
    * useAsync is a wrapper around useEffect that allows us to run asynchronous code
    * See: https://github.com/streamich/react-use/blob/master/docs/useAsync.md
    */
   useAsync(async () => {
-    if (hasContract && wallet) {
+    if (hasContract && wallet && contractId) {
       const testContract = TestContractAbi__factory.connect(contractId, wallet);
       setContract(testContract);
       const { value } = await testContract.functions.get_count().get();
