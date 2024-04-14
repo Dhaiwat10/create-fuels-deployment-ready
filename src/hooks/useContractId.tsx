@@ -8,6 +8,7 @@ export function useContractId() {
     const fetchContractId = async () => {
       if (CURRENT_ENVIRONMENT === 'local') {
         try {
+          // @ts-ignore - the file will not exist in a testnet environment
           const module = await import('@/sway-api/contract-ids.json');
           // @ts-ignore - the file will not exist in a testnet environment
           setContractId(module.default.testContract);
@@ -16,7 +17,7 @@ export function useContractId() {
           setContractId(undefined); // Explicitly setting to undefined if the file is not found
         }
       } 
-      
+
       if (CURRENT_ENVIRONMENT === 'testnet') {
         setContractId('0x7d0e267018076a977b47327286b8a3d98b18950354606bb74492b40a2fd897f3');
       }
